@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <!doctype html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+      <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">도서 리뷰 시스템</h2>
+        </div>
+
+        <form class="w-1/2 mx-auto space-y-6 px-6 pt-12 pb-6 shadow-md rounded-lg" action="{{ url_for('new_post') if newpost else url_for('edit_post', post_id=post['no']) }}" method="POST">
+          <div>
+            <label for="title" class="block text-sm/6 font-medium text-gray-900">제목</label>
+            <div class="mt-2">
+              <input type="text" name="title" id="title" autocomplete="title" placeholder="제목" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600">
+            </div>
+          </div>
+
+          <div>
+            <label for="book" class="block text-sm/6 font-medium text-gray-900">도서</label>
+            <div class="mt-2">
+              <select name="book" id="book" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600">
+                {% for book in books %}
+                <option value="{{book['title']}}">{{book['title']}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+    
+          <div>
+            <div class="flex items-center justify-between">
+              <label for="content" class="block text-sm/6 font-medium text-gray-900">내용</label>
+            </div>
+            <div class="mt-2">
+              <textarea name="content" id="content" autocomplete="content" placeholder="작성 내용" required class="resize-none h-[35vh] block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"></textarea>
+            </div>
+          </div>
+    
+          <div>
+            <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">작성</button>
+          </div>
+        </form>
+        <div class="text-right pr-8 mt-4 w-1/2 mx-auto">
+          <a href="{{url_for('index')}}" class="ml-auto rounded-md bg-indigo-600 px-4 py-2 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">목록으로</a>
+        </div>
+      
+      </div>
+      {% with messages = get_flashed_messages(with_categories=false) %}
+            {% if messages %}
+                <div id="flashMessages" class="hidden">
+                    {% for message in messages %}
+                        <div class="flashedMessage">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+      {% endwith %}
+      <script>
+        var flashedList = document.querySelector("#flashMessages");
+        if (flashedList){
+          var msg = document.querySelectorAll(".flashedMessage")[0].innerText;
+          alert(msg);
+        }
+      </script>
+      <script>
+        var title = "{{post['title']}}";
+        var content = "{{post['content']}}";
+        var book = "{{post['book']}}";
+        if (title){
+          document.querySelector("#title").value = title;
+        }
+        if(content){
+          document.querySelector("#content").value = content;
+        }
+        if(book){
+          document.querySelector("#book").value = book;
+          document.querySelector("#book").disabled = true;
+        }
+      </script>
+    </body>
+    </html>
+</body>
+</html>
